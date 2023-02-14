@@ -11,6 +11,7 @@
     <meta name="keywords" content="{{ $setting->seo }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ $setting->label }}</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="{{ url('pages/css/bootstrap.min.css') }}">
