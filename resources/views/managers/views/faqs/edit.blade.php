@@ -33,9 +33,10 @@
                 <div class="padding-30 sm-padding-5">
 
 
-                  {!! Form::open(['route' => ['manager.faqs.update', $faq->slack], 'method' =>'POST', 'files' => true ,'enctype'=>'multipart/form-data']) !!}
-                    {{ csrf_field() }}
 
+                <form  id="formFaqs" enctype="multipart/form-data"  role="form" onSubmit="return false">
+
+                <input type="hidden"    name="slack"    value="{{$faq->slack}}" />
                     <textarea style="display: none"  id="text-descriptions" name="description">{!! $faq->description !!}</textarea>
 
                     <div class="form-group-attached">
@@ -87,15 +88,14 @@
 
 
 
-                    <div class="clearfix"></div>
-
                     <div class="row m-t-25">
                         <div class="col-xl-12">
-                        {!! Form::submit(__('Editar'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                          <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                       </div>
                     </div>
 
-                  {!! Form::close() !!}
+
+                    </form>
 
                 </div>
               </div>
@@ -132,6 +132,85 @@
 @push('scripts')
 
   <script type="text/javascript">
+
+
+$(document).ready(function() {
+
+
+          $("#formFaqs").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                    position: {
+                                        required: true,
+                                        min: 1,
+                                        max: 99,
+                                    },
+                                    label: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    description: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                    position: {
+                                        required: "La posicion es necesaria.",
+                                        minlength: "La posicion debe ser mayor que 0",
+                                        maxlength: "La posicion debe ser menor que 99"
+                                    },
+                                    label: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    description: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    }
+                                },
+
+                                submitHandler: function(form) {
+
+                                    var $form = $('#formFaqs');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/faqs/update",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+
+                                              location.href = "/manager/faqs";
+
+
+                                            }
+                                        });
+
+
+                                }
+
+                });
+
+              });
+
 
     $('#thumbnail').change(function(e){
       var fileName = e.target.files[0].name;

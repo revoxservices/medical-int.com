@@ -237,7 +237,6 @@
                     myThumbnail.removeAllFiles();
                 });
 
-
                 myThumbnail.on("success", function(file, response) {
                     $("#status").val('true');
                 });
@@ -267,15 +266,12 @@
                 , url: URL
                 , data: formData
                 , success: function(result) {
-                    if (result.status == "success") {
 
                         var statuThumbnail = $("#status").val();
-                        var partner = result.partner;
-                        $("#slack").val(partner);
+                        $("#slack").val(result);
                         myThumbnail.processQueue();
 
                         uploadThumbnail();
-                    }
                 }
             });
         });
@@ -283,8 +279,10 @@
 
         function uploadThumbnail() {
 
+
             var statuThumbnail = $("#status").val();
             var statuEdit = $("#edit").val();
+
 
             if (statuThumbnail == 'true' && statuEdit == 'true') {
                 location.href = "/manager/partners";
@@ -301,42 +299,6 @@
 
 </script>
 
-                  
-<script type="text/javascript">
-    $(document).ready(function() {
-
-
-        $("#formPartners").validate({
-            submit: false
-            , ignore: ":hidden:not(#note),.note-editable.panel-body"
-            , rules: {
-                label: {
-                    required: true
-                    , minlength: 3
-                    , maxlength: 50
-                , }
-                , available: {
-                    required: true
-                , }
-            }
-            , messages: {
-                label: {
-
-                    required: "Este campo es necesario."
-                    , minlength: "Minimo 3 caracteres"
-                    , maxlength: "Maximo 50 caracteres"
-                }
-                , available: {
-                    required: "Este campo es necesario."
-                }
-            , }
-
-        });
-
-
-    });
-
-</script>
 
                   @endpush
 

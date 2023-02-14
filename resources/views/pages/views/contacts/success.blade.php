@@ -5,16 +5,18 @@
 @include ('pages.includes.header.header')
 
 
-<div class="error-404-area">
-    <div class="container">
-        <div class="notfound">
-            <h1>GRACIAS<strong>!</strong></h1>
-            <p>Por ponerte en contacto con nosotros. En sandiego siempre estamos dispuestos a escucharte, por eso te enviará una respuesta a la mayor brevedad posible.</p>
-            <a href="{{ route('home') }}" class="default-btn">
-                <span class="label">VOLVER AL INICIO</span>
-            </a>
+<section class="contact-area pt-120 pb-90" data-background="assets/img/bg/bg-map.html" style="background-image: url(&quot;assets/img/bg/bg-map.html&quot;);">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                    <div class="contact text-center mb-30 wow fadeInLeft" data-wow-delay="0ms" data-wow-duration="2000ms" style="visibility: visible; animation-duration: 2000ms; animation-delay: 0ms; animation-name: fadeInLeft;">
+                        <i class="fas fa-envelope"></i>
+                        <h3>GRACIAS!</h3>
+                        <p>Por ponerte en contacto con nosotros. En sandiego siempre estamos dispuestos a escucharte, por eso te enviará una respuesta a la mayor brevedad posible.</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
+    </section>
+    
 @endsection

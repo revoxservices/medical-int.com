@@ -66,7 +66,7 @@ class TeamsController extends Controller
 
         $team->save();
 
-        return response()->json(['status' => "success", 'team' => $team->slack]);
+        return response()->json($team->slack);
     }
 
     public function edit($slack)
@@ -111,7 +111,7 @@ class TeamsController extends Controller
         $team->updated_at = new \DateTime();
         $team->save();
 
-        return response()->json(['status' => "success", 'team' => $team->slack]);
+        return response()->json($team->slack);
     }
 
     public function destroy($slack)

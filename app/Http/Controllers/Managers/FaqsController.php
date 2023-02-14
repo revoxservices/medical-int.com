@@ -108,7 +108,8 @@ class FaqsController extends Controller
         $faq->position = $request->position;
         $faq->save();
 
-        return redirect()->route('manager.faqs');
+        return response()->json(['status' => "success", 'faq' => $faq->slack]);
+
 
     }
 
@@ -119,9 +120,9 @@ class FaqsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request , $slack)
+    public function update(Request $request)
     {
-        $faq = Faq::slack($slack);
+        $faq = Faq::slack($request->slack);
 
         $faq->label = $request->label;
 
@@ -135,7 +136,8 @@ class FaqsController extends Controller
         $faq->description = $request->description;
         $faq->save();
 
-        return redirect()->route('manager.faqs');
+        return response()->json(['status' => "success", 'faq' => $faq->slack]);
+
 
     }
 

@@ -32,9 +32,11 @@
                                 <div class="col-md-12">
                                     <div class="padding-30 sm-padding-5">
 
-                                        {!! Form::open(['route' => ['manager.settings.update', $setting->id], 'method' => 'POST', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
-                                        {{ csrf_field() }}
+                                    
+                <form  id="formSettings" enctype="multipart/form-data"  role="form" onSubmit="return false">
 
+
+                <input type="hidden"    name="id"    value="{{$setting->id}}" />
                                         <textarea style="display: none" id="text-description" name="description"
                                             >{{ $setting->description }}</textarea>
 
@@ -54,7 +56,7 @@
 
                                         <textarea style="display: none" id="text-vision" name="vision"
                                             >{{ $setting->vision }}</textarea>
-
+ 
 
                                         <div class="form-group-attached">
                                             <div class="row clearfix">
@@ -71,6 +73,12 @@
                                                         {!! Form::text('copyright', $setting->copyright , ['class' => 'form-control' . ($errors->has('copyright') ? ' is-invalid' : '')]) !!}
                                                     </div>
                                                 </div>
+                                                <div class="col-sm-12 col-md-12">
+                                                    <div class="form-group form-group-default required">
+                                                        <label>Direccion</label>
+                                                        {!! Form::text('address', $setting->address , ['class' => 'form-control' . ($errors->has('address') ? ' is-invalid' : '')]) !!}
+                                                    </div>
+                                                </div>
 
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group form-group-default required">
@@ -78,14 +86,6 @@
                                                         {!! Form::text('seo', $setting->seo , ['class' => 'form-control' . ($errors->has('seo') ? ' is-invalid' : '')]) !!}
                                                     </div>
                                                 </div>
-
-
-
-                                                
-
-
-
-                                                
 
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group form-group-default required">
@@ -253,11 +253,11 @@
 
                                         <div class="row m-t-25">
                                             <div class="col-xl-12">
-                                                {!! Form::submit(__('Editar'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                                                <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                                             </div>
                                         </div>
 
-                                        {!! Form::close() !!}
+                                        </form>
 
                                     </div>
                                 </div>
@@ -296,6 +296,186 @@
 @push('scripts')
 
     <script type="text/javascript">
+
+$(document).ready(function() {
+
+
+$("#formSettings").validate({
+                      submit: false,
+                      ignore: ":hidden:not(#note),.note-editable.panel-body",
+                      rules: {
+                        label: {
+                              required: false,
+                          },
+                          copyright: {
+                              required: false,
+                          },
+                          seo: {
+                              required: false,
+                          },
+                          email: {
+                              required: false,
+                          },
+                          phone: {
+                              required: false,
+                          },
+                          whatsapp: {
+                              required: false,
+                          },
+                          available: {
+                              required: false,
+                          },
+                          facebook: {
+                              required: false,
+                          },
+                          instagram: {
+                              required: false,
+                          },
+                          linkedin: {
+                              required: false,
+                          },
+                          twitter: {
+                              required: false,
+                          },
+                          youtube: {
+                              required: false,
+                          },
+                          api: {
+                              required: false,
+                          },
+                          lat: {
+                              required: false,
+                          },
+                          long: {
+                              required: false,
+                          },
+                          about: {
+                              required: false,
+                          },
+                          politic: {
+                              required: false,
+                          },
+                          mission: {
+                              required: false,
+                          },
+                          terms: {
+                              required: false,
+                          },
+                          vision: {
+                              required: false,
+                          },
+                          address: {
+                              required: false,
+                          },
+                      },
+                      messages: {
+                        label: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          copyright
+: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          seo: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          email: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          phone: {
+                              required: "Es necesario este campo",
+                          },
+                          address: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          whatsapp: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          facebook: {
+                              required: "Es necesario este campo",
+                          },
+
+                          
+                          instagram: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          linkedin: {
+                              required: "Es necesario este campo",
+                          },
+
+                          
+                          twitter: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                          youtube: {
+                              required: "Es necesario este campo",
+                          },
+
+                          
+                          api: {
+                              required: "Es necesario este campo",
+                          },
+                          lat: {
+                              required: "Es necesario este campo",
+                          },
+                          long: {
+                              required: "Es necesario este campo",
+                          },
+                          about: {
+                              required: "Es necesario este campo",
+                          },
+                          politic: {
+                              required: "Es necesario este campo",
+                          },
+                          mission: {
+                              required: "Es necesario este campo",
+                          },
+                          terms: {
+                              required: "Es necesario este campo",
+                          },
+                          vision: {
+                              required: "Es necesario este campo",
+                          },
+                          
+                      },
+
+                      submitHandler: function(form) {
+
+                          var $form = $('#formSettings');
+                          var formData = new FormData($form[0]);
+
+                              $.ajax({
+                                  url: "/manager/settings/update",
+                                  headers: {
+                                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                  },
+                                  type: "POST",
+                                  contentType: false,
+                                  processData: false,
+                                  data: formData ,
+                                  success: function(data) {
+
+
+                                    location.href = "/manager";
+
+
+                                  }
+                              });
+
+
+                      }
+
+      });
+
+    });
 
         $('#logo').change(function(e) {
             var fileName = e.target.files[0].name;

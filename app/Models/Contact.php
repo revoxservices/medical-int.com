@@ -29,5 +29,6 @@ class Contact extends Model
     {
         return $query->where('slack', $slack)->first();
     }
+    
 
 }

@@ -47,7 +47,7 @@
                     @foreach($contacts as $contact)
                     <tr>
                       <td class="v-align-middle semi-bold">
-                        <p>{{ $contact->firstname }} {{ $contact->lastname }}</p>
+                        <p>{{ $contact->names }}</p>
                       </td>
                       <td class="v-align-middle">
                         @if($contact->reviewed == 1)

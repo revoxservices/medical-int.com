@@ -60,7 +60,7 @@ class TagsController extends Controller
 
         $tag->save();
 
-        return redirect()->route('manager.tags');
+        return response()->json(['status' => "success", 'tag' => $tag->slack]);
 
     }
 
@@ -83,9 +83,9 @@ class TagsController extends Controller
         ]);
     }
 
-    public function update(Request $request , $slack)
+    public function update(Request $request)
     {
-        $tag = Tag::slack($slack);
+        $tag = Tag::slack($request->slack);
         $tag->label = $request->label;
         $tag->slug  = Str::slug($request->label, '-');
         
@@ -98,7 +98,7 @@ class TagsController extends Controller
 
         $tag->save();
 
-        return redirect()->route('manager.tags');
+        return response()->json(['status' => "success", 'tag' => $tag->slack]);
 
     }
 

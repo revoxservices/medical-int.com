@@ -64,7 +64,13 @@
     @include ('pages.includes.footer')
 
 
-    <script src="{{ url('pages/js/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+      integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
+      crossorigin="anonymous"
+    ></script>  
+    <script src="{{ url('managers/assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+    <script src="{{ url('managers/assets/plugins/jquery-validation/js/jquery.validate.js') }}" type="text/javascript"></script>
     <script src="{{ url('pages/js/popper.min.js') }}" type="text/javascript"></script>
     <script src="{{ url('pages/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ url('pages/js/owl.carousel.min.js') }}" type="text/javascript"></script>
@@ -82,16 +88,7 @@
     <script src="{{ url('pages/js/main.js') }}" type="text/javascript"></script>
     <script src="{{ url('pages/js/actions.js') }}" type="text/javascript"></script>
     <script src="{{ url('pages/js/typer.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/share.js') }}"></script>
     
-    
-    <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    </script>
 
     @stack('scripts')
 

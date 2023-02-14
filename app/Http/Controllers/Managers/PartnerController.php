@@ -63,7 +63,7 @@ class PartnerController extends Controller
 
         $partner->save();
 
-        return response()->json(['status' => "success", 'partner' => $partner->slack]);
+        return response()->json($partner->slack);
     }
 
     public function edit($slack)
@@ -107,11 +107,10 @@ class PartnerController extends Controller
             $partner->available = 0;
         }
 
-
         $partner->updated_at = new \DateTime();
         $partner->save();
 
-        return response()->json(['status' => "success", 'partner' => $partner->slack]);
+        return response()->json($partner->slack);
     }
 
 

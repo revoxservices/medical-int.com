@@ -177,8 +177,8 @@
                 //Gets triggered when we submit the image.
                 myThumbnail.on('sending', function(file, xhr, formData) {
                     //fetch the user id from hidden input field and send that userid with our image
-                    let Partner = document.getElementById('slack').value;
-                    formData.append('Partner', Partner);
+                    let partner = document.getElementById('slack').value;
+                    formData.append('partner', partner);
 
 
                 });
@@ -240,16 +240,14 @@
                 , url: URL
                 , data: formData
                 , success: function(result) {
-                    if (result.status == "success") {
+                  
 
                         var statuThumbnail = $("#status").val();
-                        var partner = result.partner;
-                        $("#slack").val(partner);
+                        $("#slack").val(result);
 
 
                         myThumbnail.processQueue();
                         uploadThumbnail();
-                    }
                     //
                 }
             });

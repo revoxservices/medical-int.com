@@ -26,10 +26,10 @@ class SettingsController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
 
-        $setting = Setting::id($id);
+        $setting = Setting::id($request->id);
         $setting->label = $request->label;
         $setting->email = $request->email;
         $setting->cellphone = $request->cellphone;
@@ -53,6 +53,6 @@ class SettingsController extends Controller
         $setting->updated_at = new \DateTime();
         $setting->save();
 
-        return redirect()->route('manager.home');
+        return response()->json(['status' => "success", 'setting' => $setting->slack]);
     }
 }

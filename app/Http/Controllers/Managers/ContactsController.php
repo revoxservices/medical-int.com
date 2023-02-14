@@ -59,7 +59,7 @@ class ContactsController extends Controller
 
             $contact->save();
 
-            return redirect()->route('manager.contacts');
+            return response()->json(['status' => "success", 'contact' => $contact->slack]);
 
         }
 

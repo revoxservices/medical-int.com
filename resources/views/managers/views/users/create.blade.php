@@ -22,7 +22,7 @@
                                 <li class="breadcrumb-item">
                                     <a href="{{ route('manager.users') }}">Usuarios</a>
                                 </li>
-                                <li class="breadcrumb-item active">Editar
+                                <li class="breadcrumb-item active">Crear
                                 </li>
                             </ul>
 
@@ -30,79 +30,31 @@
                                 <div class="col-md-12">
                                     <div class="padding-30 sm-padding-5">
 
+                                                    
+                                <form  id="formUsers" enctype="multipart/form-data"  role="form" onSubmit="return false">
+                                    
 
-
-
-                                        {!! Form::open(['route' => ['manager.users.storage'], 'method' => 'POST', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
-                                        {{ csrf_field() }}
 
                                         <div class="form-group-attached">
                                             <div class="row clearfix">
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group form-group-default required">
                                                         <label>Nombres</label>
-                                                        {!! Form::text('firstname', null , ['class' => 'form-control'  . ($errors->has('firstname') ? ' is-invalid' : ''), 'required']) !!}
+                                                        {!! Form::text('firstname', null, ['class' => 'form-control' . ($errors->has('firstname') ? ' is-invalid' : ''), 'required']) !!}
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group form-group-default required">
                                                         <label>Apellidos</label>
-                                                        {!! Form::text('lastname', null, ['class' => 'form-control' . ($errors->has('lastname') ? ' is-invalid' : ''), 'required']) !!}
+                                                        {!! Form::text('lastname',null, ['class' => 'form-control' . ($errors->has('lastname') ? ' is-invalid' : ''), 'required']) !!}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-12">
+                                                <div class="col-sm-12 col-md-6">
                                                     <div class="form-group form-group-default required">
                                                         <label>Email</label>
-                                                        <input type="email" class="form-control" id="email" name="email" autocomplete="new-password" required>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-12">
-                                                    <div class="form-group form-group-default required">
-                                                        <label>Direccion</label>
-                                                        {!! Form::text('address', null, ['class' => 'form-control' . ($errors->has('address') ? ' is-invalid' : '')]) !!}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div
-                                                        class="form-group form-group-default form-group-default-select2 required">
-                                                        <label>Role</label>
-                                                        {!! Form::select('roles', $roles, null, ['class' => 'full-width', 'id' => 'roles', 'data-init-plugin' => 'select2', 'required']) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="form-group form-group-default required">
-                                                        <label>Identificacion</label>
-                                                        {!! Form::text('identification', null , ['class' => 'form-control' . ($errors->has('identification') ? ' is-invalid' : ''), 'required']) !!}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="form-group form-group-default required">
-                                                        <label>Empresa</label>
-                                                        {!! Form::text('company', null , ['class' => 'form-control' . ($errors->has('company') ? ' is-invalid' : '')]) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="form-group form-group-default required">
-                                                        <label>Celular</label>
-                                                        {!! Form::text('cellphone', null , ['class' => 'form-control' . ($errors->has('cellphone') ? ' is-invalid' : '')]) !!}
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="form-group form-group-default required">
-                                                        <label>Contrasena</label>
-                                                        <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required>
-
+                                                        {!! Form::text('email', null, ['class' => 'form-control' . ($errors->has('email') ? ' is-invalid' : ''), 'required']) !!}
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
@@ -110,70 +62,72 @@
                                                         class="form-group form-group-default form-check-group d-flex align-items-center">
                                                         <div
                                                             class="form-check switch switch-lg success full-width right m-b-0">
+                                                            
                                                                 <input type="checkbox" id="available" class="switchery"
-                                                                name="available" data-init-plugin="switchery"
-                                                                data-size="small" checked />
-
+                                                                    name="available" data-init-plugin="switchery"
+                                                                    data-size="small" checked />
                                                             <label for="available">Estado</label>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
+                                           
                                             <div class="row clearfix">
-                                                
-                                                    <div class="col-sm-12 col-md-12 none" id="divEnterprise">
-                                                        <div
-                                                            class="form-group form-group-default form-group-default-select2 required">
-                                                            <label>Empresas</label>
-                                                            {!! Form::select('enterprise', $enterprises, null, ['class' => 'full-width', 'id' => 'enterprises', 'data-init-plugin' => 'select2', 'required']) !!}
-                                                        </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group form-group-default required">
+                                                        <label>Celular</label>
+                                                        {!! Form::text('cellphone', null , ['class' => 'form-control' . ($errors->has('cellphone') ? ' is-invalid' : '')]) !!}
                                                     </div>
-
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group form-group-default required">
+                                                        <label>Contrasena</label>
+                                                        <input type="password" class="form-control" id="password"
+                                                            name="password">
+                                                    </div>
+                                                </div>
                                             </div>
 
                                         </div>
 
-                                        <br>
 
-                                        <div class="clearfix"></div>
 
-                                        <div class="row m-t-25">
-                                            <div class="col-xl-12">
-                                                {!! Form::submit(__('Crear'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
-                                            </div>
+                                    <div class="row m-t-25">
+                                        <div class="col-xl-12">
+                                             <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                                         </div>
-
-                                        {!! Form::close() !!}
-
                                     </div>
+
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
             </div>
-            <!-- END CONTAINER FLUID -->
         </div>
-        <!-- END PAGE CONTENT -->
-        <!-- START COPYRIGHT -->
-        <!-- START CONTAINER FLUID -->
-        <!-- START CONTAINER FLUID -->
-        <div class=" container-fluid  container-fixed-lg footer">
-            <div class="copyright sm-text-center">
-                <p class="small-text no-margin pull-left sm-pull-reset">
-                    ©2014-2020 All Rights Reserved. Pages® and/or its subsidiaries or affiliates are registered trademark of
-                    Revox Ltd.
-                    <span class="hint-text m-l-15">Pages v05.23 20201105.r.190</span>
-                </p>
-                <p class="small no-margin pull-right sm-pull-reset">
-                    Hand-crafted <span class="hint-text">&amp; made with Love</span>
-                </p>
-                <div class="clearfix"></div>
-            </div>
+        <!-- END CONTAINER FLUID -->
+    </div>
+    <!-- END PAGE CONTENT -->
+    <!-- START COPYRIGHT -->
+    <!-- START CONTAINER FLUID -->
+    <!-- START CONTAINER FLUID -->
+    <div class=" container-fluid  container-fixed-lg footer">
+        <div class="copyright sm-text-center">
+            <p class="small-text no-margin pull-left sm-pull-reset">
+                ©2014-2020 All Rights Reserved. Pages® and/or its subsidiaries or affiliates are registered trademark of
+                Revox Ltd.
+                <span class="hint-text m-l-15">Pages v05.23 20201105.r.190</span>
+            </p>
+            <p class="small no-margin pull-right sm-pull-reset">
+                Hand-crafted <span class="hint-text">&amp; made with Love</span>
+            </p>
+            <div class="clearfix"></div>
         </div>
-        <!-- END COPYRIGHT -->
+    </div>
+    <!-- END COPYRIGHT -->
     </div>
 
 
@@ -181,32 +135,102 @@
 
 @push('scripts')
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
 
-            $('#roles').change(function(e) {
 
-                e.preventDefault();
-                var role = $(this).val();
+          $("#formUsers").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                    firstname: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    lastname: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    email: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    cellphone: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    password: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                    firstname: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    lastname: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    email: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    cellphone: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    password: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    }
+                                },
 
-                if (role == 'enterprise') {
+                                submitHandler: function(form) {
 
-                    $('#divEnterprise').removeClass("none");
+                                    var $form = $('#formUsers');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/users/storage",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+                                              location.href = "/manager/users";
 
 
-                }else if (role == 'customer') {
-                    $('#divEnterprise').removeClass("none");
-
-                } else {
-
-                    $('#divEnterprise').addClass("none");
+                                            }
+                                        });
 
 
-                }
+                                }
 
-            });
+                });
 
         });
     </script>
-
 @endpush
+

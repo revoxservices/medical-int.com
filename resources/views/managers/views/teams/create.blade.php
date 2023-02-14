@@ -245,17 +245,14 @@
                 , url: URL
                 , data: formData
                 , success: function(result) {
-                    if (result.status == "success") {
 
                         var statuThumbnail = $("#status").val();
-                        var team = result.team;
-                        $("#slack").val(team);
+                        $("#slack").val(result);
 
                         myThumbnail.processQueue();
                         uploadThumbnail();
                     }
-                    //
-                }
+                   
             });
 
 
@@ -277,7 +274,7 @@
 </script>
 
 
-<script type="text/javascript">x`
+<script type="text/javascript">
     $(document).ready(function() {
 
         $("#submit").on('click', function(e) {

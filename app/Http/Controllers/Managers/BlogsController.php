@@ -42,7 +42,6 @@ class BlogsController extends Controller
 
 
         $tags = Tag::latest()->get();
-        $tags->prepend('', '');
         $tags = $tags->pluck('label', 'id');
 
         $availables = collect([
@@ -80,11 +79,11 @@ class BlogsController extends Controller
         $blog->sentence = $request->sentence;
         $blog->content = $request->content;
         $blog->categorie_id = $request->categorie;
-        $blog->date_at = $request->date;
-        $blog->user_id = $user->id;
+        $blog->date_at = $request->date_at;
+        $blog->user_id = null;
         $blog->save();
 
-        return response()->json(['status' => "success", 'blog' => $blog->slack]);
+        return response()->json($blog->slack);
     }
 
 
@@ -98,7 +97,6 @@ class BlogsController extends Controller
         $categories = $categories->pluck('label', 'id');
 
         $tags = Tag::latest()->get();
-        $tags->prepend('', '');
         $tags = $tags->pluck('label', 'id');
 
 
@@ -136,7 +134,7 @@ class BlogsController extends Controller
         $blog->sentence = $request->sentence;
         $blog->content = $request->content;
         $blog->categorie_id = $request->categorie;
-        $blog->date_at = $request->date;
+        $blog->date_at = $request->date_at;
 
         if($request->available != null){
             $blog->available =  1;
@@ -157,7 +155,7 @@ class BlogsController extends Controller
             }
         }
 
-        return response()->json(['status' => "success", 'blog' => $blog->slack]);
+        return response()->json($blog->slack);
         
     }
 

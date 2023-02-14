@@ -214,12 +214,12 @@
                 });
 
                 myThumbnail.on("addedfile", function(file) {
-                    $("#status").val('false');
+                    $("#status").val('true');
                     $('#dropzoneThumbnail').addClass('dz-started');
                 });
 
                 myThumbnail.on("removedfile", function(file) {
-                    $("#status").val('false');
+                    $("#status").val('true');
                     item = file.name;
 
                     if (item.length > 20) {
@@ -269,16 +269,15 @@
                 , url: URL
                 , data: formData
                 , success: function(result) {
-                    if (result.status == "success") {
+                  
+
 
                         var statuThumbnail = $("#status").val();
-                        var team = result.team;
-                        $("#slack").val(team);
+                        $("#slack").val(result);
 
                         myThumbnail.processQueue();
 
                         uploadThumbnail();
-                    }
                 }
             });
         });

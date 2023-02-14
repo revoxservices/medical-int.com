@@ -33,21 +33,18 @@
 
 
 
-                                        {!! Form::open(['route' => ['manager.contacts.update', $contact->slack], 'method' => 'POST', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
-                                        {{ csrf_field() }}
+                                    <form  id="formContacts" enctype="multipart/form-data"  role="form" onSubmit="return false">
+
+
+                                    <input type="hidden"    name="slack"    value="{{$contact->slack}}" />
+
 
                                         <div class="form-group-attached">
                                             <div class="row clearfix">
-                                                <div class="col-sm-12 col-md-6">
+                                                <div class="col-sm-12 col-md-12">
                                                     <div class="form-group form-group-default disabled">
                                                         <label>Nombres</label>
-                                                        {!! Form::text('firstname', $contact->firstname, ['class' => 'form-control' . ($errors->has('firstname') ? ' is-invalid' : ''), 'disabled']) !!}
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-12 col-md-6">
-                                                    <div class="form-group form-group-default disabled">
-                                                        <label>Apellidos</label>
-                                                        {!! Form::text('lastname', $contact->lastname, ['class' => 'form-control' . ($errors->has('lastname') ? ' is-invalid' : ''), 'disabled']) !!}
+                                                        {!! Form::text('names', $contact->names, ['class' => 'form-control' . ($errors->has('firstname') ? ' is-invalid' : ''), 'disabled']) !!}
                                                     </div>
                                                 </div>
                                             </div>
@@ -99,7 +96,7 @@
                                             </div>
                                             <div class="card-body no-scroll card-toolbar disabled">
                                                 <div class="quill-wrapper">
-                                                    <div id="message">{!! $contact->description !!}</div>
+                                                    <div id="message">{!! $contact->message !!}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -108,11 +105,11 @@
 
                                         <div class="row m-t-25">
                                             <div class="col-xl-12">
-                                                {!! Form::submit(__('Editar'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                                                <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                                             </div>
-                                        </div>
+                                            </div>
 
-                                        {!! Form::close() !!}
+                                            </form>
 
                                     </div>
                                 </div>
@@ -150,4 +147,53 @@
 
 @push('scripts')
 
+<script type="text/javascript">
+        $(document).ready(function() {
+
+
+
+          $("#formContacts").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                },
+
+                                submitHandler: function(form) {
+
+                                    var $form = $('#formContacts');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/contacts/update",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+                                              location.href = "/manager/contacts";
+
+
+                                            }
+                                        });
+
+
+                                }
+
+                });
+
+        });
+    </script>
 @endpush
+

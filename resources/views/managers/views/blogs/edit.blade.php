@@ -309,16 +309,14 @@
                     , url: URL
                     , data: formData
                     , success: function(result) {
-                        if (result.status == "success") {
+
 
                             var statuThumbnail = $("#status").val();
-                            var blog = result.blog;
-                            $("#slack").val(blog);
+                            $("#slack").val(result);
 
                             myThumbnail.processQueue();
 
                             uploadThumbnail();
-                        }
                     }
                 });
             });

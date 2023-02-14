@@ -66,7 +66,7 @@ class UsersController extends Controller
         $user->updated_at = new \DateTime();
         $user->save();
 
-        return redirect()->route('manager.users');
+        return response()->json(['status' => "success", 'user' => $user->slack]);
 
     }
 
@@ -111,7 +111,7 @@ class UsersController extends Controller
 
     }
 
-    public function update(Request $request,$slack)
+    public function update(Request $request)
     {
 
         $user = User::slack($request->slack);
@@ -135,7 +135,7 @@ class UsersController extends Controller
         $user->updated_at = new \DateTime();
         $user->save();
 
-        return redirect()->route('manager.users');
+        return response()->json(['status' => "success", 'user' => $user->slack]);
     }
 
 

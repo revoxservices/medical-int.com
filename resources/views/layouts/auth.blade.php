@@ -44,12 +44,8 @@
 
     @yield('content')
 
-    <script src="{{ url('pages/js/jquery.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url('pages/js/jquery.validate.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url('pages/js/bootstrap.min.js') }}" type="text/javascript"></script>
-    <script src="{{ url('pages/js/select.js') }}" type="text/javascript"></script>
-    <script src="{{ url('pages/js/main.js') }}" type="text/javascript"></script>
-
+    <script src="{{ url('managers/assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
+    
     @stack('scripts')
 
 </body>

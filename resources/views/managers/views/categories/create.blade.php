@@ -20,7 +20,7 @@
                 <a href="{{ route('manager.dashboard') }}">Dashboard</a>
               </li>
               <li class="breadcrumb-item">
-                <a href="{{ route('manager.categories') }}">Categorias</a>
+                <a href="{{ route('manager.tags') }}">Tags</a>
               </li>
               <li class="breadcrumb-item active">Crear
               </li>
@@ -32,17 +32,16 @@
               <div class="col-md-12">
                 <div class="padding-30 sm-padding-5">
 
+                
+                <form  id="formCategories" enctype="multipart/form-data"  role="form" onSubmit="return false">
 
-
-                  {!! Form::open(['route' => ['manager.categories.storage'], 'method' =>'POST', 'files' => true ,'enctype'=>'multipart/form-data']) !!}
-                   {{ csrf_field() }}
 
                     <div class="form-group-attached">
                       <div class="row clearfix">
                         <div class="col-sm-6">
                           <div class="form-group form-group-default required">
                             <label>Título</label>
-                            {!! Form::text('label', null , ['class' => 'form-control' . ($errors->has('label') ? ' is-invalid' : ''), 'required']) !!}
+                            {!! Form::text('label', null , ['class' => 'form-control' . ($errors->has('title') ? ' is-invalid' : ''), 'required']) !!}
                           </div>
                         </div>
 
@@ -61,12 +60,12 @@
                     <div class="clearfix"></div>
 
                     <div class="row m-t-25">
-                      <div class="col-xl-12">
-                        {!! Form::submit(__('Crear'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                        <div class="col-xl-12">
+                          <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Crear</button >
                       </div>
                     </div>
 
-                  {!! Form::close() !!}
+              </form>
 
                 </div>
               </div>
@@ -102,6 +101,63 @@
 
 @push('scripts')
 
+<script type="text/javascript">
+        $(document).ready(function() {
 
+
+          $("#formCategories").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                    label: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                    label: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                },
+
+                                submitHandler: function(form) {
+
+                                    var $form = $('#formCategories');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/categories/storage",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+
+                                              location.href = "/manager/categories";
+
+
+                                            }
+                                        });
+
+
+                                }
+
+                });
+
+        });
+    </script>
 @endpush
 

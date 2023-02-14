@@ -33,9 +33,10 @@
                 <div class="padding-30 sm-padding-5">
 
 
-                  {!! Form::open(['route' => ['manager.categories.update', $categorie->slack], 'method' =>'POST', 'files' => true ,'enctype'=>'multipart/form-data']) !!}
+                <form  id="formCategories" enctype="multipart/form-data"  role="form" onSubmit="return false">
+                    
+                  <input type="hidden"    name="slack"    value="{{$categorie->slack}}" />
 
-                  {{ csrf_field() }}
 
                     <div class="form-group-attached">
                       <div class="row clearfix">
@@ -67,11 +68,11 @@
 
                     <div class="row m-t-25">
                       <div class="col-xl-12">
-                        {!! Form::submit(__('Editar'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                          <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                       </div>
                     </div>
 
-                  {!! Form::close() !!}
+                    </form>
 
                 </div>
               </div>
@@ -107,6 +108,62 @@
 
 @push('scripts')
 
+<script type="text/javascript">
+        $(document).ready(function() {
 
+          $("#formCategories").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                    label: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                    label: {
+                                        required: "Agrega la dirección.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                },
+
+                                submitHandler: function(form) {
+
+                                    var $form = $('#formCategories');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/categories/update",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+
+                                              location.href = "/manager/categories";
+
+
+                                            }
+                                        });
+
+
+                                }
+
+                });
+
+        });
+    </script>
 @endpush
 

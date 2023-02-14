@@ -35,12 +35,42 @@
 
 
 
-                  {!! Form::open(['route' => ['manager.blogs.storage'], 'method' =>'POST', 'files' => true ,'enctype'=>'multipart/form-data']) !!}
-                   {{ csrf_field() }}
+
+                {!! Form::open(['route' => ['manager.blogs.storage'], 'method' => 'POST', 'id' => 'formBlogs' , 'files' => true, 'enctype' => 'multipart/form-data']) !!}
+                {{ csrf_field() }}
 
 
+                <input type="hidden" id="slack" name="slack" value="">
+                <input type="hidden" id="status" name="status" value="false">
+                <input type="hidden" id="edit" name="edit" value="true">
                    <textarea style="display: none"  id="text-contents" name="content"></textarea>
                    <textarea style="display: none"  id="text-descriptions" name="description"></textarea>
+
+
+                   
+                   <div class="form-group-attached">
+                    <div class="dropzone-container col-md-12 pt-1 pb-2 mb-md-0">
+
+
+                      <div class="dropzone upload-file text-center py-5" id="dropzoneThumbnail">
+
+                                <div class="dz-default dz-message">
+                                    <button class="btn btn-indigo px-7 mb-2" type="button">
+                                        Buscar Archivo
+                                    </button>
+
+                                    <p class="text-heading fs-22 lh-15">Arrastra y suelta la imagen o
+                                    </p>
+
+                                    <input type="file" hidden name="file">
+                                    <p>Las fotos deben estar en formato JPEG o PNG y al menos 1024 x 768</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+
+
 
 
                     <div class="form-group-attached">
@@ -48,19 +78,29 @@
                         <div class="col-sm-12">
                           <div class="form-group form-group-default required">
                             <label>Título</label>
-                            {!! Form::text('title', null , ['class' => 'form-control' . ($errors->has('title') ? ' is-invalid' : ''), 'required']) !!}
+                            {!! Form::text('label', null , ['class' => 'form-control' . ($errors->has('label') ? ' is-invalid' : ''), 'required']) !!}
                           </div>
                         </div>
-                      </div>
-                      <div class="row clearfix">
+                      
+                      <div class="col-sm-12 clearfix">
+                          <div class="form-group form-group-default required">
+                            <label>Frase</label>
+                            {!! Form::text('sentence', null , ['class' => 'form-control' . ($errors->has('sentence') ? ' is-invalid' : ''), 'required']) !!}
+                          </div>
+                        </div>
+                        <div class="col-sm-12 clearfix">
+                          <div class="form-group form-group-default required">
+                            <label>Fecha</label>
+                            <input type="date" name="date_at" value="" class="form-control" placeholder="" required>
+                          </div>
+                        </div>
+
                         <div class="col-sm-12">
                           <div class="form-group form-group-default form-group-default-select2 required">
                             <label>Tags</label>
                             {!! Form::select('tags[]', $tags, null , ['class' => 'full-width' , 'data-init-plugin' => 'select2' , 'multiple' => 'multiple']) !!}
                           </div>
                         </div>
-                      </div>
-                      <div class="row clearfix">
                         <div class="col-sm-6">
                           <div class="form-group form-group-default form-group-default-select2 required">
                             <label>Categoría</label>
@@ -76,38 +116,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group form-group-default required">
-                            <div class="form-input-group">
-                              <label>Imagen Principal</label>
-                              <div class="form-input-group btn-input">
-                                        <label  class="action url" id="labelImagen" for="thumbnail">
-                                            <input type="file" id="thumbnail"  name="thumbnail" style="display:none">
-                                            <a class="action url url-thumbnail" >Añadir Imagen</a>
-                                        </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-
-                      <div class="row">
-                        <div class="col-md-12">
-                          <div class="form-group form-group-default required">
-                            <div class="form-input-group">
-                              <label>Imagen Detalle</label>
-                              <div class="form-input-group btn-input">
-                                        <label class="action url"  id="labelImagen" for="contents">
-                                            <input type="file" id="contents"  name="contents" style="display:none">
-                                            <a class="action url url-contents" >Añadir Imagen</a>
-                                        </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                     
                     </div>
 
                     <br>
@@ -145,7 +154,8 @@
 
                     <div class="row m-t-25">
                       <div class="col-xl-12">
-                        {!! Form::submit(__('Crear'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                        
+                      <button id="submit" type="submit" class="btn btn-primary pull-right btn-lg btn-block">Crear</button>
                       </div>
                     </div>
 
@@ -183,88 +193,289 @@
 @endsection
 
 
+
+
 @push('scripts')
+<script type="text/javascript">
+    Dropzone.autoDiscover = false;
 
-  <script type="text/javascript">
+    $(document).ready(function() {
 
-    $('#contents').change(function(e){
-          var fileName = e.target.files[0].name;
-          $(".url-contents").text(fileName);
+
+
+
+
+        // Dropzone.options.rentals = false;
+        let token = $('meta[name="csrf-token"]').attr('content');
+
+
+
+        var myThumbnail = new Dropzone("div#dropzoneThumbnail", {
+            paramName: "file"
+            , url: "{{ url('/manager/blogs/thumbnail') }}"
+            , addRemoveLinks: true
+            , autoProcessQueue: false
+            , uploadMultiple: false
+            , acceptedFiles: ".png,.jpg,.jpeg"
+            , parallelUploads: 1
+            , maxFiles: 1
+            , params: {
+                _token: token
+            },
+            // The setting up of the dropzone
+            init: function() {
+
+                var myThumbnail = this;
+
+                myThumbnail.on("maxfilesexceeded", function(file) {
+                    this.removeFile(file);
+                });
+
+                //dz-started
+                //Gets triggered when we submit the image.
+                myThumbnail.on('sending', function(file, xhr, formData) {
+                    //fetch the user id from hidden input field and send that userid with our image
+                    let blog = document.getElementById('slack').value;
+                    formData.append('blog', blog);
+
+
+                });
+
+                myThumbnail.on("addedfile", function(file) {
+                    $('#dropzoneThumbnail').addClass('dz-started');
+                    $("#status").val('false');
+                });
+
+                myThumbnail.on("removedfile", function(files) {
+
+                    $("#status").val('false');
+                    item = files.name;
+
+                    if (item.length > 30) {
+                        $.ajax({
+                            type: 'GET'
+                            , url: '/manager/blogs/delete/thumbnail/' + item
+                            , success: function(result) {
+                                //$('#dropzoneThumbnail').addClass('dz-started');
+                            }
+                        });
+                    }
+
+
+                });
+
+                myThumbnail.on('resetFiles', function() {
+                    $("#status").val('false');
+                    myThumbnail.removeAllFiles();
+                });
+
+                myThumbnail.on("success", function(file, response) {
+                    $("#status").val('true');
+                    location.href = "/manager/blogs";
+                });
+
+                myThumbnail.on("queuecomplete", function() {
+                    $("#status").val('true')
+                });
+
+                myThumbnail.on("complete", function() {
+                    $("#status").val('true');
+                    //uploadThumbnail();
+                });
+
+            }
+        });
+
+        $('#submit').on('click', function(event) {
+
+            event.preventDefault();
+            upload = false;
+            URL = $("#formBlogs").attr('action');
+            formData = $('#formBlogs').serialize();
+
+            $.ajax({
+                type: 'POST'
+                , url: URL
+                , data: formData
+                , success: function(result) {
+                  
+
+
+                        var statuThumbnail = $("#status").val();
+                        $("#slack").val(result);
+
+                        myThumbnail.processQueue();
+                        //uploadThumbnail();
+                    //
+                }
+            });
+
+
+        });
+
+        function uploadThumbnail() {
+
+            var statuThumbnail = $("#status").val();
+            var statuEdit = $("#edit").val();
+
+            if (statuThumbnail == 'true' && statuEdit == 'true') {
+                location.href = "/manager/blogs";
+            }
+
+        }
+
+        $('.select').select2({
+            placeholder: "Selección"
+            , minimumResultsForSearch: -1
+        });
+
     });
 
-    $('#thumbnail').change(function(e){
-      var fileName = e.target.files[0].name;
-      $(".url-thumbnail").text(fileName);
+</script>
+
+
+
+<script type="text/javascript">
+    var toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+        , // custom button values
+        [{
+            'list': 'ordered'
+        }, {
+            'list': 'bullet'
+        }], // superscript/subscript
+        [{
+            'header': [1, 2, 3, 4, 5, 6, false]
+        }], // add's image support
+        ['clean'] // remove formatting button
+    ];
+
+
+    var descriptions = new Quill('#description', {
+        modules: {
+            toolbar: toolbarOptions
+        }
+        , placeholder: 'Escriba aquí tu descripcion...'
+        , theme: 'snow'
     });
 
-    // Editor
-		// https://quilljs.com/docs/quickstart/
-		var toolbarOptions = [
-			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-			['blockquote', 'code-block'],
+    //Avoid Quick Search Toggle
+    descriptions.on('selection-change', function(range, oldRange, source) {
+        if (range === null && oldRange !== null) {
+            $('body').removeClass('overlay-disabled');
+        } else if (range !== null && oldRange === null) {
+            $('body').addClass('overlay-disabled');
+        }
+    });
 
-			[{ 'header': 1 }, { 'header': 2 }],               // custom button values
-			[{ 'list': 'ordered' }, { 'list': 'bullet' }],
-			[{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-			[{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-			[{ 'direction': 'rtl' }],                         // text direction
-
-			[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-			[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-			[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-			[{ 'font': [] }],
-			[{ 'align': [] }],
-
-			['clean']                                         // remove formatting button
-		];
-
-		var description = new Quill('#description', {
-			modules: {
-				toolbar: toolbarOptions
-			},
-			placeholder: 'Escriba aquí...',
-			theme: 'snow'
-		});
-
-		//Avoid Quick Search Toggle
-		description.on('selection-change', function (range, oldRange, source) {
-			if (range === null && oldRange !== null) {
-				$('body').removeClass('overlay-disabled');
-			} else if (range !== null && oldRange === null) {
-				$('body').addClass('overlay-disabled');
-			}
-		});
-
-    description.on('text-change', function(delta, oldDelta, source) {
-        $('#text-descriptions').val(description.container.firstChild.innerHTML);
+    descriptions.on('text-change', function(delta, oldDelta, source) {
+        $('#text-descriptions').val(descriptions.container.firstChild.innerHTML);
     });
 
 
+    var contents = new Quill('#content', {
+        modules: {
+            toolbar: toolbarOptions
+        }
+        , placeholder: 'Escriba aquí tu descripcion...'
+        , theme: 'snow'
+    });
 
-		var content = new Quill('#content', {
-			modules: {
-				toolbar: toolbarOptions
-			},
-			placeholder: 'Escriba aquí...',
-			theme: 'snow'
-		});
+    //Avoid Quick Search Toggle
+    contents.on('selection-change', function(range, oldRange, source) {
+        if (range === null && oldRange !== null) {
+            $('body').removeClass('overlay-disabled');
+        } else if (range !== null && oldRange === null) {
+            $('body').addClass('overlay-disabled');
+        }
+    });
 
-		//Avoid Quick Search Toggle
-		content.on('selection-change', function (range, oldRange, source) {
-			if (range === null && oldRange !== null) {
-				$('body').removeClass('overlay-disabled');
-			} else if (range !== null && oldRange === null) {
-				$('body').addClass('overlay-disabled');
-			}
-		});
-
-    content.on('text-change', function(delta, oldDelta, source) {
-        $('#text-contents').val(content.container.firstChild.innerHTML);
+    contents.on('text-change', function(delta, oldDelta, source) {
+        $('#text-contents').val(contents.container.firstChild.innerHTML);
     });
 
 
-  </script>
 
+
+    $(document).ready(function() {
+
+
+        $('#date').pickadate({
+            format: 'yyyy-mm-dd'
+            , min: undefined
+            , selectMonths: true
+            , selectYears: true
+        , });
+
+        $("#submit").on('click', function(e) {
+            $('#formBlogs').submit();
+        });
+
+        $("#formBlogs").validate({
+            submit: false
+            , ignore: ":hidden:not(#note),.note-editable.panel-body"
+            , rules: {
+                label: {
+                    required: true
+                    , minlength: 3
+                    , maxlength: 50
+                , }
+                , sentence: {
+                    required: false
+                    , minlength: 3
+                    , maxlength: 50
+                , }
+                , description: {
+                    required: true
+                , }
+                , content: {
+                    required: true
+                , }
+                , available: {
+                    required: true
+                , }
+                , categorie: {
+                    required: true
+                , }
+                , date: {
+                    required: true
+                , }
+            }
+            , messages: {
+                label: {
+                    required: "Este campo es necesario."
+                    , minlength: "Minimo 3 caracteres"
+                    , maxlength: "Maximo 50 caracteres"
+                }
+                , sentence: {
+                    required: "Este campo es necesario."
+                    , minlength: "Minimo 3 caracteres"
+                    , maxlength: "Maximo 50 caracteres"
+                }
+                , description: {
+                    required: "Este campo es necesario."
+                , }
+                , content: {
+                    required: "Este campo es necesario."
+                , }
+                , available: {
+                    required: "Este campo es necesario."
+                , }
+                , categorie: {
+                    required: "Este campo es necesario."
+                , }
+                , date: {
+                    required: "Este campo es necesario."
+                , }
+            , }
+
+        });
+
+        $('#categorie').select2({
+            placeholder: "Selecciónar"
+        , });
+
+    });
+
+</script>
 @endpush
-

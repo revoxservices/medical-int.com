@@ -26,7 +26,6 @@
 
     {{ Html::favicon('/pages/img/favicon.png') }}
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
    
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -131,6 +130,7 @@
     <script src="{{ url('managers/assets/js/datatables.js') }}" type="text/javascript"></script>
     <script src="{{ url('managers/assets/plugins/summernote/summernote.js') }}" type="text/javascript"></script>
 
+    
     @stack('scripts')
 
 </body>

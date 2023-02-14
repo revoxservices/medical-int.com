@@ -76,9 +76,6 @@ class ContactsController extends Controller
 
         $contact = Contact::slack($slack);
 
-        //Mail::send(new ResponseMails($contact));
-        //Mail::send(new AlertsMails($contact));
-
         return view('pages.views.contacts.success')->with([
             'contact' => $contact,
         ]);
@@ -88,18 +85,19 @@ class ContactsController extends Controller
     public function storage(Request $request)
     {
 
-        $contact = new Contact;
-        $contact->slack = $this->generate_slack("contacts");
-        $contact->number = $this->generate_number("contacts");
-        $contact->names = $request->names;
-        $contact->cellphone = $request->cellphone;
-        $contact->email = $request->email;
-        $contact->reviewed = 0;
-        $contact->subject = $request->subject;
-        $contact->message = $request->message;
-        $contact->save();
-        dd($contact);
+        $contacts = new Contact;
+        $contacts->slack = $this->generate_slack("contacts");
+        $contacts->number = $this->generate_number("contacts");
+        $contacts->names = $request->names;
+        $contacts->phone = $request->cellphone;
+        $contacts->cellphone = $request->cellphone;
+        $contacts->email = $request->email;
+        $contacts->reviewed = 0;
+        $contacts->subject = $request->subject;
+        $contacts->message = $request->message;
+        $contacts->save();
 
-        return redirect()->route('contacts.success', $contact->slack);
+        return response()->json($contacts->slack);
+
     }
 }

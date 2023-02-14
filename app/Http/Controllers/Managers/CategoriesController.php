@@ -55,7 +55,7 @@ class CategoriesController extends Controller
 
         $categorie->save();
 
-        return redirect()->route('manager.categories');
+        return response()->json(['status' => "success", 'categorie' => $categorie->slack]);
     }
 
     public function edit($slack)
@@ -74,10 +74,10 @@ class CategoriesController extends Controller
         ]);
     }
 
-    public function update(Request $request , $slack)
+    public function update(Request $request)
     {
         
-        $categorie = Categorie::slack($slack);
+        $categorie = Categorie::slack($request->slack);
         $categorie->label = $request->label;
         
         if($request->available != null){
@@ -87,7 +87,8 @@ class CategoriesController extends Controller
         }
 
         $categorie->save();
-        return redirect()->route('manager.categories');
+
+        return response()->json(['status' => "success", 'categorie' => $categorie->slack]);
 
     }
 

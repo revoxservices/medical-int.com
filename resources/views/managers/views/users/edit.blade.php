@@ -30,8 +30,11 @@
                                 <div class="col-md-12">
                                     <div class="padding-30 sm-padding-5">
 
-                                        {!! Form::open(['route' => ['manager.users.update', $user->slack], 'method' => 'POST', 'files' => true, 'enctype' => 'multipart/form-data']) !!}
-                                        {{ csrf_field() }}
+                                                    
+                                <form  id="formUsers" enctype="multipart/form-data"  role="form" onSubmit="return false">
+                                    
+                                    <input type="hidden"    name="slack"    value="{{$user->slack}}" />
+
 
                                         <div class="form-group-attached">
                                             <div class="row clearfix">
@@ -99,11 +102,11 @@
 
                                     <div class="row m-t-25">
                                         <div class="col-xl-12">
-                                            {!! Form::submit(__('Editar'), ['class' => 'btn btn-primary pull-right btn-lg btn-block']) !!}
+                                             <button class="btn btn-primary pull-right btn-lg btn-block" type="submit" >Editar</button >
                                         </div>
                                     </div>
 
-                                    {!! Form::close() !!}
+                                    </form>
 
                                 </div>
                             </div>
@@ -140,32 +143,102 @@
 
 @push('scripts')
 
-    <script type="text/javascript">
+<script type="text/javascript">
         $(document).ready(function() {
 
-            $('#roles').change(function(e) {
 
-                e.preventDefault();
-                var role = $(this).val();
+          $("#formUsers").validate({
+                                submit: false,
+                                ignore: ":hidden:not(#note),.note-editable.panel-body",
+                                rules: {
+                                    available: {
+                                        required: true,
+                                    },
+                                    firstname: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    lastname: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    email: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    cellphone: {
+                                        required: true,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                    password: {
+                                        required: false,
+                                        minlength: 1,
+                                        maxlength: 60,
+                                    },
+                                },
+                                messages: {
+                                  available: {
+                                        required: "Elige una estado",
+                                    },
+                                    firstname: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    lastname: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    email: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    cellphone: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    },
+                                    password: {
+                                        required: "Agregar un nombre.",
+                                        minlength: "La dirección debe contener al menos 1 caracteres",
+                                        maxlength: "La dirección debe contener no más de 60 caracteres"
+                                    }
+                                },
 
-                if (role == 'enterprise') {
+                                submitHandler: function(form) {
 
-                    $('#divEnterprise').removeClass("none");
+                                    var $form = $('#formUsers');
+                                    var formData = new FormData($form[0]);
+
+                                        $.ajax({
+                                            url: "/manager/users/update",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                            },
+                                            type: "POST",
+                                            contentType: false,
+                                            processData: false,
+                                            data: formData ,
+                                            success: function(data) {
+
+                                              location.href = "/manager/users";
 
 
-                } else if (role == 'customer') {
-                    $('#divEnterprise').removeClass("none");
-
-                } else {
-
-                    $('#divEnterprise').addClass("none");
+                                            }
+                                        });
 
 
-                }
+                                }
 
-            });
+                });
 
         });
     </script>
-
 @endpush
+

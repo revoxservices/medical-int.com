@@ -49,13 +49,6 @@
         <span class="icon-thumbnail"><i data-feather="airplay"></i></span>
       </li>
 
-      <li class="">
-        <a href="{{ route('manager.faqs') }}">
-          <span class="title">Preguntas</span>
-        </a>
-        <span class="icon-thumbnail"><i data-feather="airplay"></i></span>
-      </li>
-
 
       <li class="">
         <a href="{{ route('manager.teams') }}">
